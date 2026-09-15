@@ -4,8 +4,9 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\MahasiswaController;
 
-
 use App\Http\Controllers\MatakuliahController;
+
+use App\Http\Controllers\HomeController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,3 +40,5 @@ Route::get('/matakuliah/show/{id?}', [MatakuliahController::class, 'show']);
 Route::get('/matakuliah/edit/{id}', [MatakuliahController::class, 'edit']);
 Route::get('/matakuliah/update/{id}', [MatakuliahController::class, 'update']);
 Route::get('/matakuliah/destroy/{id}', [MatakuliahController::class, 'destroy']);
+
+Route::get('/home', [HomeController::class, 'index']);
