@@ -41,8 +41,8 @@ class QuestionController extends Controller
         $data['email']      = $request->input('email');
         $data['pertanyaan'] = $request->input('pertanyaan');
 
-        return view('home-question-respon', $data);
-        return redirect()->route('question.index')->with('data',$request );
+        //return view('home-question-respon', $data);
+        return redirect()->route('question.index')->with('data',$data );
     }
 
     /**
