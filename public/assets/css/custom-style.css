@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'RobotoSlab-VariableFont_wght';
+    src: url('assets/fonts/RobotoSlab-VariableFont_wght.ttf');
+}
+
+.font-custom{
+    font-family: 'RobotoSlab-VariableFont_wght';
+}
