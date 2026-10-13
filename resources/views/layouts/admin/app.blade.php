@@ -38,26 +38,33 @@
     <meta name="theme-color" content="#ffffff">
 
     {{--start css--}}
-    @include('layouts.admin.css')
+    <link type="text/css" href="{{ asset('assets-admin/css/volt.css') }}" rel="stylesheet">
+
+
+
     {{--end css--}}
 
 </head>
 
 <body>
 
-{{--start header--}}
-@include('layouts.admin.header')
-{{--end header--}}
+{{--start sidebar--}}
+@include('layouts.admin.sidebar')
+{{--end sidebar--}}
 
     {{--start content--}}
-    @yield('content')
+    <main class="content">
+
+        @include('layouts.admin.header')
+
+        @yield('content')
+
+    </main>
     {{--end content--}}
 
     {{--start footer--}}
     @include('layouts.admin.footer')
     {{--end footer--}}
-
-
 
     {{--start js--}}
     @include('layouts.admin.js')
