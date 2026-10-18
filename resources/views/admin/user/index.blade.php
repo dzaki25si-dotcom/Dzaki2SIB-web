@@ -42,7 +42,7 @@
                             <th>No.</th>
                             <th>Nama</th>
                             <th>Email</th>
-                            <th>Dibuat</th>
+                            <th>Password</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -53,13 +53,8 @@
                                 <td>{{ $users->firstItem() + $loop->index }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>{{ $user->created_at?->format('d-m-Y') ?? '-' }}</td>
+                                <td>{{ $user->password }}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('user.show', $user->id) }}"
-                                       class="btn btn-sm btn-info text-white">
-                                        Detail
-                                    </a>
-
                                     <a href="{{ route('user.edit', $user->id) }}"
                                        class="btn btn-sm btn-warning">
                                         Edit
