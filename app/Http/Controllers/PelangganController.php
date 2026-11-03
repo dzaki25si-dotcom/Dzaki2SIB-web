@@ -11,10 +11,16 @@ class PelangganController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['dataPelanggan'] = Pelanggan::paginate(3)->onEachSide(2);
-		return view('admin.pelanggan.index',$data);
+    $filterableColumns = ['gender'];
+    $searchableColumns = ['first_name'];
+    $pageData['dataPelanggan'] = Pelanggan::filter($request, $filterableColumns)
+                                    ->search($request, $searchableColumns)
+                                    ->paginate(10);
+    return view('admin.pelanggan.index',$pageData);
+        //$data['dataPelanggan'] = Pelanggan::paginate(3)->onEachSide(2);
+		//eturn view('admin.pelanggan.index',$data);
     }
 
     /**
@@ -22,6 +28,8 @@ class PelangganController extends Controller
      */
     public function create()
     {
+
+
         return view('admin.pelanggan.create');
     }
 
