@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class CreateJawaUser extends Seeder
 {
@@ -34,7 +36,6 @@ class CreateJawaUser extends Seeder
         ];
 
         $users = [];
-        $now = Carbon::now();
         $password = Hash::make('password123'); // Password default untuk semua user
 
         for ($i = 1; $i <= 100; $i++) {
@@ -43,7 +44,7 @@ class CreateJawaUser extends Seeder
             $lastName = $lastNames[array_rand($lastNames)];
 
             $name = "$firstName $middleName $lastName";
-            
+
             // Format email unik berurut: budi.santoso1@example.com
             $cleanFirstName = Str::slug($firstName);
             $cleanLastName = Str::slug($lastName);
@@ -52,11 +53,7 @@ class CreateJawaUser extends Seeder
             $users[] = [
                 'name'              => $name,
                 'email'             => $email,
-                'email_verified_at' => $now,
                 'password'          => $password,
-                'remember_token'    => Str::random(10),
-                'created_at'        => $now,
-                'updated_at'        => $now,
             ];
         }
 
