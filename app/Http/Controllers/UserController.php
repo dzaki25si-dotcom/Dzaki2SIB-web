@@ -8,6 +8,11 @@ class UserController extends Controller
 {
     public function index()
     {
+        if (!Auth::check()) {
+            return redirect()->route('login')
+                ->withErrors(['email' => 'Silakan login terlebih dahulu'])
+                ->onlyInput('email');
+        }
         $users = User::latest()->paginate(15);
 
         return view('admin.user.index', compact('users'));
@@ -76,6 +81,6 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        
+
     }
 }
