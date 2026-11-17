@@ -1,10 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 
 use App\Models\Pelanggan;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class PelangganController extends Controller
 {
@@ -13,52 +14,50 @@ class PelangganController extends Controller
      */
     public function index(Request $request)
     {
-     if (!Auth::check()) {
-            return redirect()->route('login')
-                ->withErrors(['email' => 'Silakan login terlebih dahulu'])
-                ->onlyInput('email');
+          if (!Auth::check()) {
+             return redirect()
+                ->route('login')
+                ->withErrors('Silakan login terlebih dahulu.');
         }
-    $filterableColumns = ['gender'];
-    $searchableColumns = ['first_name'];
-    $pageData['dataPelanggan'] = Pelanggan::filter($request, $filterableColumns)
-                                    ->search($request, $searchableColumns)
-                                    ->paginate(10);
-    return view('admin.pelanggan.index',$pageData);
-        //$data['dataPelanggan'] = Pelanggan::paginate(3)->onEachSide(2);
-		//eturn view('admin.pelanggan.index',$data);
+        $filterableColumns     = ['gender'];
+        $searchableColumns     = ['first_name', 'last_name', 'email']; //sesuai kolom Pelanggan
+        $data['dataPelanggan'] = Pelanggan::filter($request, $filterableColumns)
+            ->search($request, $searchableColumns)
+            ->paginate(5)->withQueryString();
+        return view('admin.pelanggan.index', $data);
     }
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-
-
         return view('admin.pelanggan.create');
     }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //dd($request->all());
+        // dd($request->all());
 
+
+        //persiapkan data ke array
         $data['first_name'] = $request->first_name;
-		$data['last_name'] = $request->last_name;
-		$data['birthday'] = $request->birthday;
-		$data['gender'] = $request->gender;
-		$data['email'] = $request->email;
-		$data['phone'] = $request->phone;
-
-        //insert data ke table pelanggan
+        $data['last_name']  = $request->last_name;
+        $data['birthday']   = $request->birthday;
+        $data['gender']     = $request->gender;
+        $data['email']      = $request->email;
+        $data['phone']      = $request->phone;
+        //insert data ke tabel
         Pelanggan::create($data);
-
         //kembali ke halaman /pelanggan
-        return redirect()->route('pelanggan.index')
-        ->with('success','Penambahan Data Berhasil!');
+        return redirect()->route('pelanggan.index')->with('success', 'Penambahan Data Berhasil!');
     }
+
 
     /**
      * Display the specified resource.
@@ -67,6 +66,7 @@ class PelangganController extends Controller
     {
         //
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -77,24 +77,28 @@ class PelangganController extends Controller
         return view('admin.pelanggan.edit', $data);
     }
 
+
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
         $pelanggan_id = $id;
-    $pelanggan = Pelanggan::findOrFail($pelanggan_id);
+        $pelanggan    = Pelanggan::findOrFail($pelanggan_id);
 
-    $pelanggan->first_name = $request->first_name;
-    $pelanggan->last_name = $request->last_name;
-    $pelanggan->birthday = $request->birthday;
-    $pelanggan->gender = $request->gender;
-    $pelanggan->email = $request->email;
-    $pelanggan->phone = $request->phone;
 
-    $pelanggan->save();
-    return redirect()->route('pelanggan.index')->with('success','Perubahan Data Berhasil!');
-        }
+        $pelanggan->first_name = $request->first_name;
+        $pelanggan->last_name  = $request->last_name;
+        $pelanggan->birthday   = $request->birthday;
+        $pelanggan->gender     = $request->gender;
+        $pelanggan->email      = $request->email;
+        $pelanggan->phone      = $request->phone;
+
+
+        $pelanggan->save();
+        return redirect()->route('pelanggan.index')->with('success', 'Perubahan Data Berhasil!');
+    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -103,7 +107,8 @@ class PelangganController extends Controller
     {
         $pelanggan = Pelanggan::findOrFail($id);
 
-$pelanggan->delete();
-return redirect()->route('pelanggan.index')->with('success','Data berhasil dihapus');
+
+        $pelanggan->delete();
+        return redirect()->route('pelanggan.index')->with('success', 'Data berhasil dihapus');
     }
 }
