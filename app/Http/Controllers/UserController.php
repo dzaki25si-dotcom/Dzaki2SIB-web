@@ -1,41 +1,36 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
-
 use App\Models\User;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-
+use App\Notifications\WelcomeUser;
 
 class UserController extends Controller
 {
     // Menampilkan daftar user
     public function index()
     {
-    if (!Auth::check()) {
+        if (!Auth::check()) {
             return redirect()->route('login')
                 ->withErrors(['email' => 'Silakan login terlebih dahulu'])
                 ->onlyInput('email');
         }
 
-
         $users = User::latest()->paginate(15);
+
         return view('admin.user.index', compact('users'));
-
-
     }
-
 
     // Menampilkan form tambah user
     public function create()
     {
         return view('admin.user.create');
     }
-
 
     // Menyimpan user baru
     public function store(Request $request)
@@ -75,27 +70,25 @@ class UserController extends Controller
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);
 
-
         // Mengenkripsi password
         $validated['password'] = Hash::make($validated['password']);
 
-
         // Menyimpan user baru
-        User::create($validated);
+        $user = User::create($validated);
 
+        // Kirim notifikasi ke user baru
+        $user->notify(new WelcomeUser());
 
         return redirect()
             ->route('user.index')
             ->with('success', 'User berhasil ditambahkan.');
     }
 
-
     // Menampilkan form edit user
     public function edit(User $user)
     {
         return view('admin.user.edit', compact('user'));
     }
-
 
     // Memperbarui data user
     public function update(Request $request, User $user)
@@ -129,7 +122,6 @@ class UserController extends Controller
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);
 
-
         // Password hanya diubah jika kolomnya diisi
         if (!empty($validated['password'])) {
             $validated['password'] = Hash::make($validated['password']);
@@ -137,28 +129,23 @@ class UserController extends Controller
             unset($validated['password']);
         }
 
-
         // Memperbarui data user
         $user->update($validated);
-
 
         return redirect()
             ->route('user.index')
             ->with('success', 'User berhasil diperbarui.');
     }
 
-
     // Menghapus user
     public function destroy(User $user)
     {
         $user->delete();
 
-
         return redirect()
             ->route('user.index')
             ->with('success', 'User berhasil dihapus.');
     }
-
 
     // Menampilkan detail user
     public function show(User $user)
