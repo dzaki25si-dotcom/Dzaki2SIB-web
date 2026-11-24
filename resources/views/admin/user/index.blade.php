@@ -47,6 +47,28 @@
                         </tr>
                     </thead>
 
+                                        <form action="{{ route('user.index') }}" method="GET" class="mb-3">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="text"
+                                    name="search"
+                                    class="form-control"
+                                    value="{{ request('search') }}"
+                                    placeholder="Cari nama user...">
+
+                                <button type="submit" class="btn btn-primary">
+                                    Search
+                                </button>
+
+                                @if (request('search'))
+                                    <a href="{{ route('user.index') }}"
+                                    class="btn btn-outline-secondary">
+                                        Clear
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+                    </form>
                     <tbody>
                         @forelse ($users as $user)
                             <tr>

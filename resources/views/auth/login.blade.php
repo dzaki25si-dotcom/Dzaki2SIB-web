@@ -61,6 +61,7 @@
         <div class="mt-3 mb-4 text-center">
             <span class="fw-normal">or login with</span>
         </div>
+        <a href="{{ route('redirect.google') }}" class="btn btn-secondary w-100"> Login with Google </a>
         <div class="d-flex justify-content-center my-4">
             <a href="#" class="btn btn-icon-only btn-pill btn-outline-gray-500 me-2" aria-label="facebook button" title="facebook button">
                 <svg class="icon icon-xxs" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="facebook-f" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">

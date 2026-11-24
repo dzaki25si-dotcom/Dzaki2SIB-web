@@ -90,3 +90,11 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('pelanggan', PelangganController::class);
     });
 });
+
+Route::get('/auth/redirect-google',
+    [AuthController::class, 'redirectToGoogle']
+)->name('redirect.google');
+
+Route::get('/google/callback',
+    [AuthController::class, 'handleGoogleCallback']
+)->name('google.callback');
